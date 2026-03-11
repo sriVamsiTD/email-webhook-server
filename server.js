@@ -7,6 +7,7 @@ const app = express();
 
 // Allow server to read JSON data
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 // -----------------------------
@@ -36,6 +37,7 @@ app.post("/webhook", async (req, res) => {
       formData.Email ||
       formData.userEmail ||
       formData["E-mail"];
+
     let message = "New Lead Received\n\n";
 
     for (const key in formData) {
@@ -81,7 +83,8 @@ app.post("/webhook", async (req, res) => {
     console.error("Error sending email ❌", error);
 
     res.status(500).json({
-      message: "Error sending email"
+      message: "Error sending email",
+      error: error.message
     });
   }
 });
@@ -90,6 +93,16 @@ app.post("/webhook", async (req, res) => {
 // -----------------------------
 // Start server
 // -----------------------------
-app.listen(3000, () => {
-  console.log("Webhook server running at http://localhost:3000");
+
+// OLD CODE (kept for reference)
+// app.listen(3000, () => {
+//   console.log("Webhook server running at http://localhost:3000");
+// });
+
+
+// NEW CODE (required for Render deployment)
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Webhook server running on port ${PORT}`);
 });
