@@ -60,7 +60,7 @@ app.post("/webhook", async (req, res) => {
     // -----------------------------
     const mailOptions = {
       from: "pentakotasri204@gmail.com",
-      to: "productdevjrtradais@tccpltd.com",
+      to: "b.jayanthreddy31@gmail.com",
       replyTo: email,
       subject: "New Form Submission",
       text: message
