@@ -9,7 +9,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 // -----------------------------
 // Test route
 // -----------------------------
@@ -17,6 +16,19 @@ app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
 
+// -----------------------------
+// Email configuration
+// -----------------------------
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: "pentakotasri204@gmail.com",
+    pass: "jyrg tsnn irml udxo"
+  },
+  family: 4
+});
 
 // -----------------------------
 // Webhook endpoint
@@ -27,10 +39,7 @@ app.post("/webhook", async (req, res) => {
     console.log("Webhook triggered");
     console.log("Incoming data:", req.body);
 
-    // req.body contains all form fields sent by Framer
     const formData = req.body;
-
-    // Convert all fields into readable email text
 
     const email =
       formData.email ||
@@ -44,22 +53,6 @@ app.post("/webhook", async (req, res) => {
       message += `${key}: ${formData[key]}\n`;
     }
 
-
-    // -----------------------------
-    // Email configuration
-    // -----------------------------
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "pentakotasri204@gmail.com",
-        pass: "jyrg tsnn irml udxo"
-      }
-    });
-
-
-    // -----------------------------
-    // Email content
-    // -----------------------------
     const mailOptions = {
       from: "pentakotasri204@gmail.com",
       to: "b.jayanthreddy31@gmail.com",
@@ -68,8 +61,6 @@ app.post("/webhook", async (req, res) => {
       text: message
     };
 
-
-    // Send email
     await transporter.sendMail(mailOptions);
 
     console.log("Email sent successfully ✅");
@@ -89,18 +80,9 @@ app.post("/webhook", async (req, res) => {
   }
 });
 
-
 // -----------------------------
 // Start server
 // -----------------------------
-
-// OLD CODE (kept for reference)
-// app.listen(3000, () => {
-//   console.log("Webhook server running at http://localhost:3000");
-// });
-
-
-// NEW CODE (required for Render deployment)
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
