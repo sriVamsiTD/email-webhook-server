@@ -22,12 +22,12 @@ app.get("/", (req, res) => {
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
- secure: true,
+  secure: true,
   auth: {
     user: "pentakotasri204@gmail.com",
     pass: "jyrg tsnn irml udxo"
   },
-  family: 4
+  connectionTimeout: 20000
 });
 
 // -----------------------------
